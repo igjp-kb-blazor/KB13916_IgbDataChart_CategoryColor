@@ -1,0 +1,61 @@
+﻿<div style="max-width:900px; height:500px;padding:24px; margin:auto; display:flex; flex-direction:column; gap:12px;">
+    <IgbDataChart Width="100%"
+                  Height="100%"
+                  @ref="_dataChart">
+        <IgbCategoryXAxis Name="xAxis"
+                          DataSource="_sampleData" Interval="1"
+                          Label="@(nameof(SampleDataItem.Month))" 
+                          Title="2024 年">
+        </IgbCategoryXAxis>
+        <IgbNumericYAxis Name="yAxis"
+                         MinimumValue="0"
+                         MaximumValue="100000" 
+                         Interval="10000" 
+                         LabelFormat="{0}"
+                         Title="売上">
+            <YAxisLabelFormatSpecifiers>
+                <IgbNumberFormatSpecifier MaximumSignificantDigits="3" />
+            </YAxisLabelFormatSpecifiers>
+        </IgbNumericYAxis>
+        <IgbColumnSeries Title="売上"
+                         DataSource="_sampleData"
+                         XAxisName="xAxis"
+                         YAxisName="yAxis"
+                         MouseOverEnabled="true"
+                         IsCustomCategoryStyleAllowed="true"
+                         AssigningCategoryStyleScript="onAssigningCategoryStyleScript"
+                         ValueMemberPath="@nameof(SampleDataItem.Sales)">
+        </IgbColumnSeries>
+    </IgbDataChart>
+</div>
+
+@code
+{
+    private IgbDataChart? _dataChart;
+
+    private record SampleDataItem(string Month, double Sales);
+
+    private readonly IEnumerable<SampleDataItem> _sampleData = new List<SampleDataItem>
+    {
+        new SampleDataItem("1月", 92000),
+        new SampleDataItem("2月", 82000),
+        new SampleDataItem("3月", 75000),
+        new SampleDataItem("4月", 60000),
+        new SampleDataItem("5月", 55000),
+        new SampleDataItem("6月", 48000),
+        new SampleDataItem("7月", 91000),
+        new SampleDataItem("8月", 60000),
+        new SampleDataItem("9月", 75000),
+        new SampleDataItem("10月", 70000),
+        new SampleDataItem("11月", 85000),
+        new SampleDataItem("12月", 95000),
+    };
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+}
